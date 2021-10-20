@@ -23,14 +23,20 @@ export const ResultContextProvider = ({ children }) => {
 
     const data = await response.json();
 
-    setResults(data);
-    console.log(data);
+    if (type.includes("/news")) {
+      setResults(data.entries);
+    } else if (type.includes("/images")) {
+      setResults(data.images_results);
+    } else {
+      setResults(data.results);
+    }
+
     setIsLoading(false);
   };
 
   return (
     <ResultContext.Provider
-      value={{getResults, searchTerm, setSearchTerm, results, isLoading}}
+      value={{ getResults, searchTerm, setSearchTerm, results, isLoading }}
     >
       {children}
     </ResultContext.Provider>

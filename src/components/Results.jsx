@@ -6,7 +6,12 @@ import { useResultContext } from "../contexts/ResultContextProvider";
 import { Loading } from "./Loading";
 
 export const Results = () => {
-  const { results, isLoading, getResults, searchTerm } = useResultContext();
+  const {
+    results,
+    isLoading,
+    getResults,
+    searchTerm,
+  } = useResultContext();
   const location = useLocation();
 
   useEffect(() => {
@@ -14,7 +19,7 @@ export const Results = () => {
       if (location.pathname === "videos") {
         getResults(`search/q=${searchTerm} videos`);
       } else {
-        getResults(`${location.pathname}/q=${searchTerm}& num=40`);
+        getResults(`${location.pathname}/q=${searchTerm}&lr=lang_en&num=20`);
       }
     }
   }, [searchTerm, location.pathname]);
@@ -25,7 +30,7 @@ export const Results = () => {
     case "/search":
       return (
         <div className="flex flex-wrap justify-between space-y-6 sm:px-56">
-          {results?.results?.map(({ link, title, description }, index) => (
+          {results?.map(({ link, title, description }, index) => (
             <div key={index} className="md:w-2/5 w-full">
               <a href={link} target="_blank" rel="noreferrer">
                 <p className="text-sm">
@@ -47,11 +52,11 @@ export const Results = () => {
     case "/images":
       return (
         <div className="flex flex-wrap justify-center items-center">
-          {results?.image_results?.map(
+          {results?.map(
             ({ image, link: { href, title } }, index) => (
               <a
                 key={index}
-                taret="_blank"
+                target="_blank"
                 rel="noreferrer"
                 href={href}
                 className="sm:p-3 p-5"
@@ -64,7 +69,25 @@ export const Results = () => {
         </div>
       );
     case "/news":
-      return "news";
+      return (
+        <div className="flex flex-wrap justify-between space-y-6 sm:px-56 items-center">
+          {results?.map(({ links, id, source, title }) => (
+            <div key={id} className="md:w-2/5 w-full">
+              <a
+                href={links[0].href}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:underline"
+              >
+                <p className="text-lg dark:text-blue-300 text-blue-700">
+                  {title}
+                </p>
+                <div className="flex gap-4">{source?.href}</div>
+              </a>
+            </div>
+          ))}
+        </div>
+      );
     case "/videos":
       return "videos";
     default:
