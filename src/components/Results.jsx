@@ -10,8 +10,14 @@ export const Results = () => {
   const location = useLocation();
 
   useEffect(() => {
-      getResults("/search/q=JavaScript Mastery&num=40");
-  }, []);
+    if (searchTerm) {
+      if (location.pathname === "videos") {
+        getResults(`search/q=${searchTerm} videos`);
+      } else {
+        getResults(`${location.pathname}/q=${searchTerm}& num=40`);
+      }
+    }
+  }, [searchTerm, location.pathname]);
 
   if (isLoading) return <Loading />;
 
@@ -29,7 +35,9 @@ export const Results = () => {
                   {title}
                 </p>
                 <p className="text-sm mt-1 md:mt-2 dark:text-blue-200 text-blue-800">
-                  {description}
+                  {description.length > 240
+                    ? description.substring(0, 240)
+                    : description}
                 </p>
               </a>
             </div>
@@ -37,7 +45,24 @@ export const Results = () => {
         </div>
       );
     case "/images":
-      return "images";
+      return (
+        <div className="flex flex-wrap justify-center items-center">
+          {results?.image_results?.map(
+            ({ image, link: { href, title } }, index) => (
+              <a
+                key={index}
+                taret="_blank"
+                rel="noreferrer"
+                href={href}
+                className="sm:p-3 p-5"
+              >
+                <img src={image?.src} alt={title} loading="lazy" />
+                <p className="break-words w-36 text-sm mt-2">{title}</p>
+              </a>
+            )
+          )}
+        </div>
+      );
     case "/news":
       return "news";
     case "/videos":
