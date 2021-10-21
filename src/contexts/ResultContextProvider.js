@@ -37,7 +37,7 @@ export const ResultContextProvider = ({ children }) => {
 
   return (
     <ResultContext.Provider
-      value={{ getResults, searchTerm, setSearchTerm, results, isLoading }}
+      value={{ getResults, searchTerm, setSearchTerm, results, isLoading, setResults }}
     >
       {children}
     </ResultContext.Provider>

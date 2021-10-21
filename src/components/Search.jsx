@@ -6,8 +6,9 @@ import { Links } from "./Links";
 
 export const Search = () => {
   const [text, setText] = useState("");
-  const {setSearchTerm} = useResultContext();
+  const { setSearchTerm, setResults } = useResultContext();
   const [debouncedValue] = useDebounce(text, 300);
+    
 
   useEffect(() => {
     if (debouncedValue) setSearchTerm(debouncedValue);
@@ -27,7 +28,7 @@ export const Search = () => {
         <button
           type="button"
           className="absolute align-middle top-1.5 right-4 text-xl text-gray-500"
-          onClick={() => setText("")}
+          onClick={() => { setText(''); setResults([]); setSearchTerm('') }}
         >
           x
         </button>
