@@ -1,4 +1,5 @@
 import React, { useContext, createContext, useState } from "react";
+import { LINKS } from "../constants";
 
 const ResultContext = createContext();
 const baseUrl = "https://google-search3.p.rapidapi.com/api/v1";
@@ -23,10 +24,10 @@ export const ResultContextProvider = ({ children }) => {
 
     const data = await response.json();
 
-    if (type.includes("/news")) {
+    if (type.includes(LINKS.news)) {
       setResults(data.entries);
-    } else if (type.includes("/images")) {
-      setResults(data.images_results);
+    } else if (type.includes(LINKS.images)) {
+      setResults(data.image_results);
     } else {
       setResults(data.results);
     }
